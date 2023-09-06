@@ -109,6 +109,9 @@ if [ "${ACTION}" = "up" ]; then
         echo "${RECORD_SET_NAME}.${ZONE_NAME} -> null"
     fi
 
+    # Some versions of "az cli" require creating an empty A record first.
+    az network private-dns record-set a create --resource-group "${RG}" --zone-name "${ZONE_NAME}" --name "${RECORD_SET_NAME}" > /dev/null 2>&1
+
     az network private-dns record-set a add-record --resource-group "${RG}" --zone-name "${ZONE_NAME}" --ipv4-address "${IPV4_ADDRESS}" --record-set-name "${RECORD_SET_NAME}" > /dev/null 2>&1
 
     echo "${RECORD_SET_NAME}.${ZONE_NAME} -> ${IPV4_ADDRESS}"
